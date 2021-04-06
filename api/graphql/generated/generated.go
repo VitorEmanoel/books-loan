@@ -11,7 +11,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
-	entities "github.com/VitorEmanoel/books-loan/models"
+	"github.com/VitorEmanoel/books-loan/models"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
 )
@@ -58,9 +58,9 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		AddBookToMyCollection func(childComplexity int, loggedUserID string, input entities.AddBookInput) int
-		CreateUser            func(childComplexity int, input entities.CreateUserInput) int
-		LendBook              func(childComplexity int, loggedUserID string, input entities.LendBookInput) int
+		AddBookToMyCollection func(childComplexity int, loggedUserID string, input models.AddBookInput) int
+		CreateUser            func(childComplexity int, input models.CreateUserInput) int
+		LendBook              func(childComplexity int, loggedUserID string, input models.LendBookInput) int
 		ReturnBook            func(childComplexity int, loggedUserID string, bookID string) int
 	}
 
@@ -80,13 +80,13 @@ type ComplexityRoot struct {
 }
 
 type MutationResolver interface {
-	CreateUser(ctx context.Context, input entities.CreateUserInput) (*entities.User, error)
-	AddBookToMyCollection(ctx context.Context, loggedUserID string, input entities.AddBookInput) (*entities.Book, error)
-	LendBook(ctx context.Context, loggedUserID string, input entities.LendBookInput) (*entities.BookLoan, error)
-	ReturnBook(ctx context.Context, loggedUserID string, bookID string) (*entities.BookLoan, error)
+	CreateUser(ctx context.Context, input models.CreateUserInput) (*models.User, error)
+	AddBookToMyCollection(ctx context.Context, loggedUserID string, input models.AddBookInput) (*models.Book, error)
+	LendBook(ctx context.Context, loggedUserID string, input models.LendBookInput) (*models.BookLoan, error)
+	ReturnBook(ctx context.Context, loggedUserID string, bookID string) (*models.BookLoan, error)
 }
 type QueryResolver interface {
-	User(ctx context.Context, id string) (*entities.User, error)
+	User(ctx context.Context, id string) (*models.User, error)
 }
 
 type executableSchema struct {
@@ -177,7 +177,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.AddBookToMyCollection(childComplexity, args["loggedUserId"].(string), args["input"].(entities.AddBookInput)), true
+		return e.complexity.Mutation.AddBookToMyCollection(childComplexity, args["loggedUserId"].(string), args["input"].(models.AddBookInput)), true
 
 	case "Mutation.createUser":
 		if e.complexity.Mutation.CreateUser == nil {
@@ -189,7 +189,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateUser(childComplexity, args["input"].(entities.CreateUserInput)), true
+		return e.complexity.Mutation.CreateUser(childComplexity, args["input"].(models.CreateUserInput)), true
 
 	case "Mutation.lendBook":
 		if e.complexity.Mutation.LendBook == nil {
@@ -201,7 +201,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.LendBook(childComplexity, args["loggedUserId"].(string), args["input"].(entities.LendBookInput)), true
+		return e.complexity.Mutation.LendBook(childComplexity, args["loggedUserId"].(string), args["input"].(models.LendBookInput)), true
 
 	case "Mutation.returnBook":
 		if e.complexity.Mutation.ReturnBook == nil {
@@ -413,7 +413,7 @@ func (ec *executionContext) field_Mutation_addBookToMyCollection_args(ctx contex
 		}
 	}
 	args["loggedUserId"] = arg0
-	var arg1 entities.AddBookInput
+	var arg1 models.AddBookInput
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 		arg1, err = ec.unmarshalNAddBookInput2githubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐAddBookInput(ctx, tmp)
@@ -428,7 +428,7 @@ func (ec *executionContext) field_Mutation_addBookToMyCollection_args(ctx contex
 func (ec *executionContext) field_Mutation_createUser_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 entities.CreateUserInput
+	var arg0 models.CreateUserInput
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 		arg0, err = ec.unmarshalNCreateUserInput2githubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐCreateUserInput(ctx, tmp)
@@ -452,7 +452,7 @@ func (ec *executionContext) field_Mutation_lendBook_args(ctx context.Context, ra
 		}
 	}
 	args["loggedUserId"] = arg0
-	var arg1 entities.LendBookInput
+	var arg1 models.LendBookInput
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 		arg1, err = ec.unmarshalNLendBookInput2githubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐLendBookInput(ctx, tmp)
@@ -556,7 +556,7 @@ func (ec *executionContext) field___Type_fields_args(ctx context.Context, rawArg
 
 // region    **************************** field.gotpl *****************************
 
-func (ec *executionContext) _Book_id(ctx context.Context, field graphql.CollectedField, obj *entities.Book) (ret graphql.Marshaler) {
+func (ec *executionContext) _Book_id(ctx context.Context, field graphql.CollectedField, obj *models.Book) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -591,7 +591,7 @@ func (ec *executionContext) _Book_id(ctx context.Context, field graphql.Collecte
 	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Book_title(ctx context.Context, field graphql.CollectedField, obj *entities.Book) (ret graphql.Marshaler) {
+func (ec *executionContext) _Book_title(ctx context.Context, field graphql.CollectedField, obj *models.Book) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -626,7 +626,7 @@ func (ec *executionContext) _Book_title(ctx context.Context, field graphql.Colle
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Book_pages(ctx context.Context, field graphql.CollectedField, obj *entities.Book) (ret graphql.Marshaler) {
+func (ec *executionContext) _Book_pages(ctx context.Context, field graphql.CollectedField, obj *models.Book) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -661,7 +661,7 @@ func (ec *executionContext) _Book_pages(ctx context.Context, field graphql.Colle
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Book_createdAt(ctx context.Context, field graphql.CollectedField, obj *entities.Book) (ret graphql.Marshaler) {
+func (ec *executionContext) _Book_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.Book) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -696,7 +696,7 @@ func (ec *executionContext) _Book_createdAt(ctx context.Context, field graphql.C
 	return ec.marshalNIsoDate2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _BookLoan_book(ctx context.Context, field graphql.CollectedField, obj *entities.BookLoan) (ret graphql.Marshaler) {
+func (ec *executionContext) _BookLoan_book(ctx context.Context, field graphql.CollectedField, obj *models.BookLoan) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -726,12 +726,12 @@ func (ec *executionContext) _BookLoan_book(ctx context.Context, field graphql.Co
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*entities.Book)
+	res := resTmp.(*models.Book)
 	fc.Result = res
 	return ec.marshalNBook2ᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐBook(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _BookLoan_fromUser(ctx context.Context, field graphql.CollectedField, obj *entities.BookLoan) (ret graphql.Marshaler) {
+func (ec *executionContext) _BookLoan_fromUser(ctx context.Context, field graphql.CollectedField, obj *models.BookLoan) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -766,7 +766,7 @@ func (ec *executionContext) _BookLoan_fromUser(ctx context.Context, field graphq
 	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _BookLoan_toUser(ctx context.Context, field graphql.CollectedField, obj *entities.BookLoan) (ret graphql.Marshaler) {
+func (ec *executionContext) _BookLoan_toUser(ctx context.Context, field graphql.CollectedField, obj *models.BookLoan) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -801,7 +801,7 @@ func (ec *executionContext) _BookLoan_toUser(ctx context.Context, field graphql.
 	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _BookLoan_lentAt(ctx context.Context, field graphql.CollectedField, obj *entities.BookLoan) (ret graphql.Marshaler) {
+func (ec *executionContext) _BookLoan_lentAt(ctx context.Context, field graphql.CollectedField, obj *models.BookLoan) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -836,7 +836,7 @@ func (ec *executionContext) _BookLoan_lentAt(ctx context.Context, field graphql.
 	return ec.marshalNIsoDate2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _BookLoan_returnedAt(ctx context.Context, field graphql.CollectedField, obj *entities.BookLoan) (ret graphql.Marshaler) {
+func (ec *executionContext) _BookLoan_returnedAt(ctx context.Context, field graphql.CollectedField, obj *models.BookLoan) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -893,7 +893,7 @@ func (ec *executionContext) _Mutation_createUser(ctx context.Context, field grap
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateUser(rctx, args["input"].(entities.CreateUserInput))
+		return ec.resolvers.Mutation().CreateUser(rctx, args["input"].(models.CreateUserInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -905,7 +905,7 @@ func (ec *executionContext) _Mutation_createUser(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*entities.User)
+	res := resTmp.(*models.User)
 	fc.Result = res
 	return ec.marshalNUser2ᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐUser(ctx, field.Selections, res)
 }
@@ -935,7 +935,7 @@ func (ec *executionContext) _Mutation_addBookToMyCollection(ctx context.Context,
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().AddBookToMyCollection(rctx, args["loggedUserId"].(string), args["input"].(entities.AddBookInput))
+		return ec.resolvers.Mutation().AddBookToMyCollection(rctx, args["loggedUserId"].(string), args["input"].(models.AddBookInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -947,7 +947,7 @@ func (ec *executionContext) _Mutation_addBookToMyCollection(ctx context.Context,
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*entities.Book)
+	res := resTmp.(*models.Book)
 	fc.Result = res
 	return ec.marshalNBook2ᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐBook(ctx, field.Selections, res)
 }
@@ -977,7 +977,7 @@ func (ec *executionContext) _Mutation_lendBook(ctx context.Context, field graphq
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().LendBook(rctx, args["loggedUserId"].(string), args["input"].(entities.LendBookInput))
+		return ec.resolvers.Mutation().LendBook(rctx, args["loggedUserId"].(string), args["input"].(models.LendBookInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -989,7 +989,7 @@ func (ec *executionContext) _Mutation_lendBook(ctx context.Context, field graphq
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*entities.BookLoan)
+	res := resTmp.(*models.BookLoan)
 	fc.Result = res
 	return ec.marshalNBookLoan2ᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐBookLoan(ctx, field.Selections, res)
 }
@@ -1031,7 +1031,7 @@ func (ec *executionContext) _Mutation_returnBook(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*entities.BookLoan)
+	res := resTmp.(*models.BookLoan)
 	fc.Result = res
 	return ec.marshalNBookLoan2ᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐBookLoan(ctx, field.Selections, res)
 }
@@ -1070,7 +1070,7 @@ func (ec *executionContext) _Query_user(ctx context.Context, field graphql.Colle
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*entities.User)
+	res := resTmp.(*models.User)
 	fc.Result = res
 	return ec.marshalOUser2ᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐUser(ctx, field.Selections, res)
 }
@@ -1146,7 +1146,7 @@ func (ec *executionContext) _Query___schema(ctx context.Context, field graphql.C
 	return ec.marshalO__Schema2ᚖgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐSchema(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _User_id(ctx context.Context, field graphql.CollectedField, obj *entities.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_id(ctx context.Context, field graphql.CollectedField, obj *models.User) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1181,7 +1181,7 @@ func (ec *executionContext) _User_id(ctx context.Context, field graphql.Collecte
 	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _User_name(ctx context.Context, field graphql.CollectedField, obj *entities.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_name(ctx context.Context, field graphql.CollectedField, obj *models.User) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1216,7 +1216,7 @@ func (ec *executionContext) _User_name(ctx context.Context, field graphql.Collec
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _User_email(ctx context.Context, field graphql.CollectedField, obj *entities.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_email(ctx context.Context, field graphql.CollectedField, obj *models.User) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1251,7 +1251,7 @@ func (ec *executionContext) _User_email(ctx context.Context, field graphql.Colle
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _User_createdAt(ctx context.Context, field graphql.CollectedField, obj *entities.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.User) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1286,7 +1286,7 @@ func (ec *executionContext) _User_createdAt(ctx context.Context, field graphql.C
 	return ec.marshalNIsoDate2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _User_collection(ctx context.Context, field graphql.CollectedField, obj *entities.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_collection(ctx context.Context, field graphql.CollectedField, obj *models.User) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1313,12 +1313,12 @@ func (ec *executionContext) _User_collection(ctx context.Context, field graphql.
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*entities.Book)
+	res := resTmp.([]*models.Book)
 	fc.Result = res
 	return ec.marshalOBook2ᚕᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐBook(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _User_lentBooks(ctx context.Context, field graphql.CollectedField, obj *entities.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_lentBooks(ctx context.Context, field graphql.CollectedField, obj *models.User) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1345,12 +1345,12 @@ func (ec *executionContext) _User_lentBooks(ctx context.Context, field graphql.C
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*entities.BookLoan)
+	res := resTmp.([]*models.BookLoan)
 	fc.Result = res
 	return ec.marshalOBookLoan2ᚕᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐBookLoan(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _User_borrowedBooks(ctx context.Context, field graphql.CollectedField, obj *entities.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_borrowedBooks(ctx context.Context, field graphql.CollectedField, obj *models.User) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1377,7 +1377,7 @@ func (ec *executionContext) _User_borrowedBooks(ctx context.Context, field graph
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*entities.BookLoan)
+	res := resTmp.([]*models.BookLoan)
 	fc.Result = res
 	return ec.marshalOBookLoan2ᚕᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐBookLoan(ctx, field.Selections, res)
 }
@@ -2469,8 +2469,8 @@ func (ec *executionContext) ___Type_ofType(ctx context.Context, field graphql.Co
 
 // region    **************************** input.gotpl *****************************
 
-func (ec *executionContext) unmarshalInputAddBookInput(ctx context.Context, obj interface{}) (entities.AddBookInput, error) {
-	var it entities.AddBookInput
+func (ec *executionContext) unmarshalInputAddBookInput(ctx context.Context, obj interface{}) (models.AddBookInput, error) {
+	var it models.AddBookInput
 	var asMap = obj.(map[string]interface{})
 
 	for k, v := range asMap {
@@ -2497,8 +2497,8 @@ func (ec *executionContext) unmarshalInputAddBookInput(ctx context.Context, obj 
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, obj interface{}) (entities.CreateUserInput, error) {
-	var it entities.CreateUserInput
+func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, obj interface{}) (models.CreateUserInput, error) {
+	var it models.CreateUserInput
 	var asMap = obj.(map[string]interface{})
 
 	for k, v := range asMap {
@@ -2525,8 +2525,8 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputLendBookInput(ctx context.Context, obj interface{}) (entities.LendBookInput, error) {
-	var it entities.LendBookInput
+func (ec *executionContext) unmarshalInputLendBookInput(ctx context.Context, obj interface{}) (models.LendBookInput, error) {
+	var it models.LendBookInput
 	var asMap = obj.(map[string]interface{})
 
 	for k, v := range asMap {
@@ -2563,7 +2563,7 @@ func (ec *executionContext) unmarshalInputLendBookInput(ctx context.Context, obj
 
 var bookImplementors = []string{"Book"}
 
-func (ec *executionContext) _Book(ctx context.Context, sel ast.SelectionSet, obj *entities.Book) graphql.Marshaler {
+func (ec *executionContext) _Book(ctx context.Context, sel ast.SelectionSet, obj *models.Book) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, bookImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -2605,7 +2605,7 @@ func (ec *executionContext) _Book(ctx context.Context, sel ast.SelectionSet, obj
 
 var bookLoanImplementors = []string{"BookLoan"}
 
-func (ec *executionContext) _BookLoan(ctx context.Context, sel ast.SelectionSet, obj *entities.BookLoan) graphql.Marshaler {
+func (ec *executionContext) _BookLoan(ctx context.Context, sel ast.SelectionSet, obj *models.BookLoan) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, bookLoanImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -2736,7 +2736,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 
 var userImplementors = []string{"User"}
 
-func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj *entities.User) graphql.Marshaler {
+func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj *models.User) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, userImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -3027,16 +3027,16 @@ func (ec *executionContext) ___Type(ctx context.Context, sel ast.SelectionSet, o
 
 // region    ***************************** type.gotpl *****************************
 
-func (ec *executionContext) unmarshalNAddBookInput2githubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐAddBookInput(ctx context.Context, v interface{}) (entities.AddBookInput, error) {
+func (ec *executionContext) unmarshalNAddBookInput2githubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐAddBookInput(ctx context.Context, v interface{}) (models.AddBookInput, error) {
 	res, err := ec.unmarshalInputAddBookInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNBook2githubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐBook(ctx context.Context, sel ast.SelectionSet, v entities.Book) graphql.Marshaler {
+func (ec *executionContext) marshalNBook2githubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐBook(ctx context.Context, sel ast.SelectionSet, v models.Book) graphql.Marshaler {
 	return ec._Book(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNBook2ᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐBook(ctx context.Context, sel ast.SelectionSet, v *entities.Book) graphql.Marshaler {
+func (ec *executionContext) marshalNBook2ᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐBook(ctx context.Context, sel ast.SelectionSet, v *models.Book) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -3046,11 +3046,11 @@ func (ec *executionContext) marshalNBook2ᚖgithubᚗcomᚋVitorEmanoelᚋbooks�
 	return ec._Book(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNBookLoan2githubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐBookLoan(ctx context.Context, sel ast.SelectionSet, v entities.BookLoan) graphql.Marshaler {
+func (ec *executionContext) marshalNBookLoan2githubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐBookLoan(ctx context.Context, sel ast.SelectionSet, v models.BookLoan) graphql.Marshaler {
 	return ec._BookLoan(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNBookLoan2ᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐBookLoan(ctx context.Context, sel ast.SelectionSet, v *entities.BookLoan) graphql.Marshaler {
+func (ec *executionContext) marshalNBookLoan2ᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐBookLoan(ctx context.Context, sel ast.SelectionSet, v *models.BookLoan) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -3075,7 +3075,7 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) unmarshalNCreateUserInput2githubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐCreateUserInput(ctx context.Context, v interface{}) (entities.CreateUserInput, error) {
+func (ec *executionContext) unmarshalNCreateUserInput2githubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐCreateUserInput(ctx context.Context, v interface{}) (models.CreateUserInput, error) {
 	res, err := ec.unmarshalInputCreateUserInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
@@ -3125,7 +3125,7 @@ func (ec *executionContext) marshalNIsoDate2string(ctx context.Context, sel ast.
 	return res
 }
 
-func (ec *executionContext) unmarshalNLendBookInput2githubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐLendBookInput(ctx context.Context, v interface{}) (entities.LendBookInput, error) {
+func (ec *executionContext) unmarshalNLendBookInput2githubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐLendBookInput(ctx context.Context, v interface{}) (models.LendBookInput, error) {
 	res, err := ec.unmarshalInputLendBookInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
@@ -3145,11 +3145,11 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 	return res
 }
 
-func (ec *executionContext) marshalNUser2githubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐUser(ctx context.Context, sel ast.SelectionSet, v entities.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2githubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐUser(ctx context.Context, sel ast.SelectionSet, v models.User) graphql.Marshaler {
 	return ec._User(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐUser(ctx context.Context, sel ast.SelectionSet, v *entities.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐUser(ctx context.Context, sel ast.SelectionSet, v *models.User) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -3388,7 +3388,7 @@ func (ec *executionContext) marshalN__TypeKind2string(ctx context.Context, sel a
 	return res
 }
 
-func (ec *executionContext) marshalOBook2ᚕᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐBook(ctx context.Context, sel ast.SelectionSet, v []*entities.Book) graphql.Marshaler {
+func (ec *executionContext) marshalOBook2ᚕᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐBook(ctx context.Context, sel ast.SelectionSet, v []*models.Book) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -3428,14 +3428,14 @@ func (ec *executionContext) marshalOBook2ᚕᚖgithubᚗcomᚋVitorEmanoelᚋboo
 	return ret
 }
 
-func (ec *executionContext) marshalOBook2ᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐBook(ctx context.Context, sel ast.SelectionSet, v *entities.Book) graphql.Marshaler {
+func (ec *executionContext) marshalOBook2ᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐBook(ctx context.Context, sel ast.SelectionSet, v *models.Book) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Book(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOBookLoan2ᚕᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐBookLoan(ctx context.Context, sel ast.SelectionSet, v []*entities.BookLoan) graphql.Marshaler {
+func (ec *executionContext) marshalOBookLoan2ᚕᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐBookLoan(ctx context.Context, sel ast.SelectionSet, v []*models.BookLoan) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -3475,7 +3475,7 @@ func (ec *executionContext) marshalOBookLoan2ᚕᚖgithubᚗcomᚋVitorEmanoel�
 	return ret
 }
 
-func (ec *executionContext) marshalOBookLoan2ᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐBookLoan(ctx context.Context, sel ast.SelectionSet, v *entities.BookLoan) graphql.Marshaler {
+func (ec *executionContext) marshalOBookLoan2ᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐBookLoan(ctx context.Context, sel ast.SelectionSet, v *models.BookLoan) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -3545,7 +3545,7 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 	return graphql.MarshalString(*v)
 }
 
-func (ec *executionContext) marshalOUser2ᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐUser(ctx context.Context, sel ast.SelectionSet, v *entities.User) graphql.Marshaler {
+func (ec *executionContext) marshalOUser2ᚖgithubᚗcomᚋVitorEmanoelᚋbooksᚑloanᚋmodelsᚐUser(ctx context.Context, sel ast.SelectionSet, v *models.User) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}

@@ -1,3 +1,5 @@
+//go:generate gqlgen
+
 package main
 
 import "github.com/sirupsen/logrus"
