@@ -7,37 +7,12 @@ type AddBookInput struct {
 	Pages int    `json:"pages"`
 }
 
-type Book struct {
-	ID        string `json:"id"`
-	Title     string `json:"title"`
-	Pages     int    `json:"pages"`
-	CreatedAt string `json:"createdAt"`
-}
-
-type BookLoan struct {
-	Book       *Book   `json:"book"`
-	FromUser   string  `json:"fromUser"`
-	ToUser     string  `json:"toUser"`
-	LentAt     string  `json:"lentAt"`
-	ReturnedAt *string `json:"returnedAt"`
-}
-
 type CreateUserInput struct {
 	Name  string `json:"name"`
 	Email string `json:"email"`
 }
 
 type LendBookInput struct {
-	BookID   string `json:"bookId"`
-	ToUserID string `json:"toUserId"`
-}
-
-type User struct {
-	ID            string      `json:"id"`
-	Name          string      `json:"name"`
-	Email         string      `json:"email"`
-	CreatedAt     string      `json:"createdAt"`
-	Collection    []*Book     `json:"collection"`
-	LentBooks     []*BookLoan `json:"lentBooks"`
-	BorrowedBooks []*BookLoan `json:"borrowedBooks"`
+	BookID   int64 `json:"bookId"`
+	ToUserID int64 `json:"toUserId"`
 }

@@ -44,12 +44,18 @@ autobind:
 # modelgen, the others will be allowed when binding to fields. Configure them to
 # your liking
 models:
+  Book:
+    model:
+      - github.com/VitorEmanoel/books-loan/models.Book
+  BookLoan:
+    model:
+      - github.com/VitorEmanoel/books-loan/models.BookLoan
+  User:
+    model:
+      - github.com/VitorEmanoel/books-loan/models.User
   ID:
     model:
-      - github.com/99designs/gqlgen/graphql.ID
-      - github.com/99designs/gqlgen/graphql.Int
       - github.com/99designs/gqlgen/graphql.Int64
-      - github.com/99designs/gqlgen/graphql.Int32
   Int:
     model:
       - github.com/99designs/gqlgen/graphql.Int
