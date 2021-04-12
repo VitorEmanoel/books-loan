@@ -12,7 +12,6 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
-	"github.com/VitorEmanoel/books-loan/application"
 	"github.com/VitorEmanoel/books-loan/database/plugins"
 	"github.com/VitorEmanoel/books-loan/models"
 	"github.com/VitorEmanoel/books-loan/repository"
@@ -21,7 +20,7 @@ import (
 type Rows []string
 
 func TestCreateUser(t *testing.T) {
-	mediator.NewMediator()
+	var med = mediator.NewMediator()
 	mockDB, mock, err := sqlmock.New()
 	assert.Nil(t, err)
 	var id int64 = 1
@@ -41,12 +40,12 @@ func TestCreateUser(t *testing.T) {
 	err = plugins.SetupPlugins(db)
 	assert.Nil(t, err)
 	var repo = repository.NewRepository(db)
+	med.GetContainer().Inject("repository", repo)
 	var userInput = models.CreateUserInput{
 		Name:  "Test User",
 		Email: "test@mail.com",
 	}
 	user, err := mediator.Send(&CreateUserRequest{
-		BaseRequest: application.NewRequest(repo),
 		UserInput:   userInput,
 	})
 	var expectedUser = models.User{
@@ -60,7 +59,7 @@ func TestCreateUser(t *testing.T) {
 }
 
 func TestCreateUserWithEmailAlreadyExists(t *testing.T) {
-	mediator.NewMediator()
+	var med = mediator.NewMediator()
 	mockDB, mock, err := sqlmock.New()
 	assert.Nil(t, err)
 
@@ -74,12 +73,12 @@ func TestCreateUserWithEmailAlreadyExists(t *testing.T) {
 	err = plugins.SetupPlugins(db)
 	assert.Nil(t, err)
 	var repo = repository.NewRepository(db)
+	med.GetContainer().Inject("repository", repo)
 	var userInput = models.CreateUserInput{
 		Name:  "Test User",
 		Email: "test@mail.com",
 	}
 	user, err := mediator.Send(&CreateUserRequest{
-		BaseRequest: application.NewRequest(repo),
 		UserInput:   userInput,
 	})
 	assert.Nil(t, user)
@@ -88,7 +87,7 @@ func TestCreateUserWithEmailAlreadyExists(t *testing.T) {
 }
 
 func TestCreateUserWithInvalidEmail(t *testing.T) {
-	mediator.NewMediator()
+	var med = mediator.NewMediator()
 	mockDB, mock, err := sqlmock.New()
 	assert.Nil(t, err)
 
@@ -102,12 +101,12 @@ func TestCreateUserWithInvalidEmail(t *testing.T) {
 	err = plugins.SetupPlugins(db)
 	assert.Nil(t, err)
 	var repo = repository.NewRepository(db)
+	med.GetContainer().Inject("repository", repo)
 	var userInput = models.CreateUserInput{
 		Name:  "Test User",
 		Email: "test_invalidmail.com",
 	}
 	user, err := mediator.Send(&CreateUserRequest{
-		BaseRequest: application.NewRequest(repo),
 		UserInput:   userInput,
 	})
 	assert.Nil(t, user)
@@ -120,7 +119,7 @@ func TestCreateUserWithInvalidEmail(t *testing.T) {
 }
 
 func TestCreateUserWithEmptyName(t *testing.T) {
-	mediator.NewMediator()
+	var med = mediator.NewMediator()
 	mockDB, mock, err := sqlmock.New()
 	assert.Nil(t, err)
 
@@ -134,12 +133,12 @@ func TestCreateUserWithEmptyName(t *testing.T) {
 	err = plugins.SetupPlugins(db)
 	assert.Nil(t, err)
 	var repo = repository.NewRepository(db)
+	med.GetContainer().Inject("repository", repo)
 	var userInput = models.CreateUserInput{
 		Name:  "",
 		Email: "test@mail.com",
 	}
 	user, err := mediator.Send(&CreateUserRequest{
-		BaseRequest: application.NewRequest(repo),
 		UserInput:   userInput,
 	})
 	assert.Nil(t, user)
@@ -152,7 +151,7 @@ func TestCreateUserWithEmptyName(t *testing.T) {
 }
 
 func TestCreateUserWithEmptyEmail(t *testing.T) {
-	mediator.NewMediator()
+	var med = mediator.NewMediator()
 	mockDB, mock, err := sqlmock.New()
 	assert.Nil(t, err)
 
@@ -166,12 +165,12 @@ func TestCreateUserWithEmptyEmail(t *testing.T) {
 	err = plugins.SetupPlugins(db)
 	assert.Nil(t, err)
 	var repo = repository.NewRepository(db)
+	med.GetContainer().Inject("repository", repo)
 	var userInput = models.CreateUserInput{
 		Name:  "Test user",
 		Email: "",
 	}
 	user, err := mediator.Send(&CreateUserRequest{
-		BaseRequest: application.NewRequest(repo),
 		UserInput:   userInput,
 	})
 	assert.Nil(t, user)
@@ -184,7 +183,7 @@ func TestCreateUserWithEmptyEmail(t *testing.T) {
 }
 
 func TestCreateUserWithEmptyEmailAndName(t *testing.T) {
-	mediator.NewMediator()
+	var med = mediator.NewMediator()
 	mockDB, mock, err := sqlmock.New()
 	assert.Nil(t, err)
 
@@ -202,8 +201,8 @@ func TestCreateUserWithEmptyEmailAndName(t *testing.T) {
 		Name:  "",
 		Email: "",
 	}
+	med.GetContainer().Inject("repository", repo)
 	user, err := mediator.Send(&CreateUserRequest{
-		BaseRequest: application.NewRequest(repo),
 		UserInput:   userInput,
 	})
 	assert.Nil(t, user)

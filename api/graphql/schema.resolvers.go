@@ -5,36 +5,46 @@ package graphql
 
 import (
 	"context"
-	"fmt"
+	"time"
 
 	mediator "github.com/VitorEmanoel/gMediator"
 
 	"github.com/VitorEmanoel/books-loan/api/graphql/generated"
-	"github.com/VitorEmanoel/books-loan/application"
 	"github.com/VitorEmanoel/books-loan/application/command"
 	"github.com/VitorEmanoel/books-loan/application/query"
 	"github.com/VitorEmanoel/books-loan/models"
 )
 
 func (r *bookResolver) CreatedAt(ctx context.Context, obj *models.Book) (string, error) {
-	panic(fmt.Errorf("not implemented"))
+	var formattedValue = obj.CreatedAt.Format(time.RFC3339)
+	return formattedValue, nil
 }
 
 func (r *bookLoanResolver) Book(ctx context.Context, obj *models.BookLoan) (*models.Book, error) {
-	panic(fmt.Errorf("not implemented"))
+	book, err := mediator.Send(&query.FindBookRequest{
+		BookId:  obj.BookId,
+	}, mediator.WithContext(ctx))
+	if err != nil {
+		return nil, err
+	}
+	return book.(*models.Book), nil
 }
 
 func (r *bookLoanResolver) LentAt(ctx context.Context, obj *models.BookLoan) (string, error) {
-	panic(fmt.Errorf("not implemented"))
+	var formattedValue = obj.LentAt.Format(time.RFC3339)
+	return formattedValue, nil
 }
 
 func (r *bookLoanResolver) ReturnedAt(ctx context.Context, obj *models.BookLoan) (*string, error) {
-	panic(fmt.Errorf("not implemented"))
+	if obj.ReturnedAt != nil {
+		var formattedValue = obj.ReturnedAt.Format(time.RFC3339)
+		return &formattedValue, nil
+	}
+	return nil, nil
 }
 
 func (r *mutationResolver) CreateUser(ctx context.Context, input models.CreateUserInput) (*models.User, error) {
 	user, err := mediator.Send(&command.CreateUserRequest{
-		BaseRequest: application.NewRequest(r.Repository),
 		UserInput: input,
 	}, mediator.WithContext(ctx))
 	if err != nil {
@@ -45,7 +55,6 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input models.CreateUs
 
 func (r *mutationResolver) AddBookToMyCollection(ctx context.Context, loggedUserID int64, input models.AddBookInput) (*models.Book, error) {
 	book, err := mediator.Send(&command.AddBookRequest{
-		BaseRequest: application.NewRequest(r.Repository),
 		LoggedUserId: loggedUserID,
 		BookInput:    input,
 	}, mediator.WithContext(ctx))
@@ -57,7 +66,6 @@ func (r *mutationResolver) AddBookToMyCollection(ctx context.Context, loggedUser
 
 func (r *mutationResolver) LendBook(ctx context.Context, loggedUserID int64, input models.LendBookInput) (*models.BookLoan, error) {
 	bookLoan, err := mediator.Send(&command.LendBookRequest{
-		BaseRequest: application.NewRequest(r.Repository),
 		LoggedUserId:  loggedUserID,
 		LendBookInput: input,
 	}, mediator.WithContext(ctx))
@@ -69,7 +77,6 @@ func (r *mutationResolver) LendBook(ctx context.Context, loggedUserID int64, inp
 
 func (r *mutationResolver) ReturnBook(ctx context.Context, loggedUserID int64, bookID int64) (*models.BookLoan, error) {
 	bookLoan, err := mediator.Send(&command.ReturnBookRequest{
-		BaseRequest: application.NewRequest(r.Repository),
 		LoggedUserId: loggedUserID,
 		BookId:       bookID,
 	}, mediator.WithContext(ctx))
@@ -81,7 +88,6 @@ func (r *mutationResolver) ReturnBook(ctx context.Context, loggedUserID int64, b
 
 func (r *queryResolver) User(ctx context.Context, id int64) (*models.User, error) {
 	user, err := mediator.Send(&query.FindUserRequest{
-		BaseRequest: application.NewRequest(r.Repository),
 		UserId:  id,
 	}, mediator.WithContext(ctx))
 	if err != nil {
@@ -91,19 +97,38 @@ func (r *queryResolver) User(ctx context.Context, id int64) (*models.User, error
 }
 
 func (r *userResolver) CreatedAt(ctx context.Context, obj *models.User) (string, error) {
-	panic(fmt.Errorf("not implemented"))
+	var formattedValue = obj.CreatedAt.Format(time.RFC3339)
+	return formattedValue, nil
 }
 
 func (r *userResolver) Collection(ctx context.Context, obj *models.User) ([]*models.Book, error) {
-	panic(fmt.Errorf("not implemented"))
+	books, err := mediator.Send(&query.FindBooksRequest{
+		UserId:  obj.ID,
+	}, mediator.WithContext(ctx))
+	if err != nil {
+		return nil, err
+	}
+	return books.([]*models.Book), nil
 }
 
 func (r *userResolver) LentBooks(ctx context.Context, obj *models.User) ([]*models.BookLoan, error) {
-	panic(fmt.Errorf("not implemented"))
+	booksLoan, err := mediator.Send(&query.FindBookLoansRequest{
+		FromUser: obj.ID,
+	}, mediator.WithContext(ctx))
+	if err != nil {
+		return nil, err
+	}
+	return booksLoan.([]*models.BookLoan), nil
 }
 
 func (r *userResolver) BorrowedBooks(ctx context.Context, obj *models.User) ([]*models.BookLoan, error) {
-	panic(fmt.Errorf("not implemented"))
+	booksLoan, err := mediator.Send(&query.FindBookLoansRequest{
+		ToUser: obj.ID,
+	}, mediator.WithContext(ctx))
+	if err != nil {
+		return nil, err
+	}
+	return booksLoan.([]*models.BookLoan), nil
 }
 
 // Book returns generated.BookResolver implementation.

@@ -10,3 +10,7 @@ type Book struct {
 	CreatedAt   time.Time   `json:"createdAt" gorm:"default:current_timestamp"`
 }
 
+func (b *Book) AllowedFields() []string {
+	return Fields{"id", "title", "pages", "createdAt"}
+}
+

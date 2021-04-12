@@ -12,14 +12,13 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
-	"github.com/VitorEmanoel/books-loan/application"
 	"github.com/VitorEmanoel/books-loan/database/plugins"
 	"github.com/VitorEmanoel/books-loan/models"
 	"github.com/VitorEmanoel/books-loan/repository"
 )
 
 func TestAddBook(t *testing.T) {
-	mediator.NewMediator()
+	var med = mediator.NewMediator()
 	mockDB, mock, err := sqlmock.New()
 	assert.Nil(t, err)
 	var loggedUser int64 = 1
@@ -39,8 +38,8 @@ func TestAddBook(t *testing.T) {
 	err = plugins.SetupPlugins(db)
 	assert.Nil(t, err)
 	var repo = repository.NewRepository(db)
+	med.GetContainer().Inject("repository", repo)
 	book, err := mediator.Send(&AddBookRequest{
-		BaseRequest:  application.NewRequest(repo),
 		LoggedUserId: loggedUser,
 		BookInput:    models.AddBookInput{
 			Title: "My Book",
@@ -60,7 +59,7 @@ func TestAddBook(t *testing.T) {
 }
 
 func TestAddBookWithNotFoundUser(t *testing.T) {
-	mediator.NewMediator()
+	var med = mediator.NewMediator()
 	mockDB, mock, err := sqlmock.New()
 	assert.Nil(t, err)
 	var loggedUser int64 = 1
@@ -80,8 +79,8 @@ func TestAddBookWithNotFoundUser(t *testing.T) {
 	err = plugins.SetupPlugins(db)
 	assert.Nil(t, err)
 	var repo = repository.NewRepository(db)
+	med.GetContainer().Inject("repository", repo)
 	book, err := mediator.Send(&AddBookRequest{
-		BaseRequest:  application.NewRequest(repo),
 		LoggedUserId: loggedUser,
 		BookInput:    models.AddBookInput{
 			Title: "My Book",
@@ -90,11 +89,11 @@ func TestAddBookWithNotFoundUser(t *testing.T) {
 	})
 	assert.Nil(t, book)
 	assert.NotNil(t, err)
-	assert.ErrorIs(t, err, UserNotFound)
+	assert.ErrorIs(t, err, LoggedUserNotfound)
 }
 
 func TestAddBookWithEmptyTitle(t *testing.T) {
-	mediator.NewMediator()
+	var med = mediator.NewMediator()
 	mockDB, mock, err := sqlmock.New()
 	assert.Nil(t, err)
 	var loggedUser int64 = 1
@@ -109,8 +108,8 @@ func TestAddBookWithEmptyTitle(t *testing.T) {
 	err = plugins.SetupPlugins(db)
 	assert.Nil(t, err)
 	var repo = repository.NewRepository(db)
+	med.GetContainer().Inject("repository", repo)
 	book, err := mediator.Send(&AddBookRequest{
-		BaseRequest:  application.NewRequest(repo),
 		LoggedUserId: loggedUser,
 		BookInput:    models.AddBookInput{
 			Title: "",
@@ -126,7 +125,7 @@ func TestAddBookWithEmptyTitle(t *testing.T) {
 }
 
 func TestAddBookWithPageZero(t *testing.T) {
-	mediator.NewMediator()
+	var med = mediator.NewMediator()
 	mockDB, mock, err := sqlmock.New()
 	assert.Nil(t, err)
 	var loggedUser int64 = 1
@@ -141,8 +140,8 @@ func TestAddBookWithPageZero(t *testing.T) {
 	err = plugins.SetupPlugins(db)
 	assert.Nil(t, err)
 	var repo = repository.NewRepository(db)
+	med.GetContainer().Inject("repository", repo)
 	book, err := mediator.Send(&AddBookRequest{
-		BaseRequest:  application.NewRequest(repo),
 		LoggedUserId: loggedUser,
 		BookInput:    models.AddBookInput{
 			Title: "My book",

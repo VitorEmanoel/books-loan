@@ -5,18 +5,17 @@ import (
 
 	mediator "github.com/VitorEmanoel/gMediator"
 
-	"github.com/VitorEmanoel/books-loan/application"
 	"github.com/VitorEmanoel/books-loan/models"
 	"github.com/VitorEmanoel/books-loan/repository"
 )
 
 type CreateUserRequest struct {
-	application.BaseRequest
+	mediator.Request
 	UserInput       models.CreateUserInput      `json:"input"`
 }
 
 type CreateUserRequestHandler struct {
-
+	Repository      repository.Repository   `inject:"repository"`
 }
 
 var ErrEmailAlreadyInUse = errors.New("email already in use")
@@ -26,7 +25,7 @@ func (h *CreateUserRequestHandler) Handle(r *CreateUserRequest) (*models.User, e
 		Name: r.UserInput.Name,
 		Email: r.UserInput.Email,
 	}
-	values, err := r.Repository.SetModel(&models.User{}).
+	values, err := h.Repository.SetModel(&models.User{}).
 		FindAll(
 			repository.Select("id"),
 			repository.Where("email = ?", r.UserInput.Email),
@@ -38,7 +37,7 @@ func (h *CreateUserRequestHandler) Handle(r *CreateUserRequest) (*models.User, e
 	if ok && len(users) > 0 {
 		return nil, ErrEmailAlreadyInUse
 	}
-	err = r.Repository.SetModel(&models.User{}).Create(&user)
+	err = h.Repository.SetModel(&models.User{}).Create(&user)
 	if err != nil {
 		return nil, err
 	}

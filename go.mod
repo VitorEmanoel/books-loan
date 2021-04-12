@@ -5,7 +5,7 @@ go 1.16
 require (
 	github.com/99designs/gqlgen v0.13.0
 	github.com/DATA-DOG/go-sqlmock v1.5.0
-	github.com/VitorEmanoel/gMediator v1.0.5 // indirect
+	github.com/VitorEmanoel/gMediator v1.0.8 // indirect
 	github.com/VitorEmanoel/menv v1.0.3
 	github.com/agnivade/levenshtein v1.1.0 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d // indirect

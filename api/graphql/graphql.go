@@ -7,8 +7,6 @@ import (
 	"github.com/valyala/fasthttp/fasthttpadaptor"
 
 	"github.com/VitorEmanoel/books-loan/api/graphql/generated"
-	"github.com/VitorEmanoel/books-loan/database"
-	"github.com/VitorEmanoel/books-loan/repository"
 )
 
 func NewGraphQL(app fiber.Router) {
@@ -20,13 +18,9 @@ func NewGraphQL(app fiber.Router) {
 	})
 
 	app.Post("/graphql", func(ctx *fiber.Ctx) error {
-		db := database.GetDatabase(ctx)
 		graphqlServer := handler.NewDefaultServer(
 			generated.NewExecutableSchema(generated.Config{
-				Resolvers: &Resolver{
-					DB: db,
-					Repository: repository.NewRepository(db),
-				},
+				Resolvers: &Resolver{},
 			}))
 		fasthttpadaptor.NewFastHTTPHandler(graphqlServer)(ctx.Context())
 		return nil

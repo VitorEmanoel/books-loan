@@ -12,6 +12,12 @@ github.com/Shopify/sarama v1.19.0/go.mod h1:FVkBWblsNy7DGZRfXLU0O9RCGt5g3g3yEuWX
 github.com/Shopify/toxiproxy v2.1.4+incompatible/go.mod h1:OXgGpZ6Cli1/URJOF1DMxUHB2q5Ap20/P/eIdh4G0pI=
 github.com/VitorEmanoel/gMediator v1.0.5 h1:34hPKsEoQYhN2/bD+eErWGJi6zHee0bFoYwKzGy6HNk=
 github.com/VitorEmanoel/gMediator v1.0.5/go.mod h1:kpcyZGz18r72Wj9qc7yij+apwWf3iMK8RS+vdIpqcnI=
+github.com/VitorEmanoel/gMediator v1.0.6 h1:9ka1ZNrn4mLSvgto0/ddkU+RrISggsdTw/py21qC8rQ=
+github.com/VitorEmanoel/gMediator v1.0.6/go.mod h1:kpcyZGz18r72Wj9qc7yij+apwWf3iMK8RS+vdIpqcnI=
+github.com/VitorEmanoel/gMediator v1.0.7 h1:dTWVMmymrrAKThydYWIc+JsUetXcLWkuFwdjQLEcbKY=
+github.com/VitorEmanoel/gMediator v1.0.7/go.mod h1:kpcyZGz18r72Wj9qc7yij+apwWf3iMK8RS+vdIpqcnI=
+github.com/VitorEmanoel/gMediator v1.0.8 h1:A6M8fHeE2BAhnkSEXb2cNxxyBaBe8Z7fN3nS6Kt5u1o=
+github.com/VitorEmanoel/gMediator v1.0.8/go.mod h1:kpcyZGz18r72Wj9qc7yij+apwWf3iMK8RS+vdIpqcnI=
 github.com/VitorEmanoel/menv v1.0.3 h1:kuSYUBYK9g9Hxm4Jt9dp0zFbTIIfkSDOdxcSspvAfqQ=
 github.com/VitorEmanoel/menv v1.0.3/go.mod h1:qkllQi/RwDFvSYxVgq2zHcZTXxFjx5OK10PEx3O8fSg=
 github.com/VividCortex/gohistogram v1.0.0/go.mod h1:Pf5mBqqDxYaXu3hDrrU+w6nw50o/4+TcAqDqk/vUH7g=
