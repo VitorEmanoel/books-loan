@@ -8,4 +8,4 @@ RUN apk --no-cache add ca-certificates libc6-compat curl
 WORKDIR /app
 COPY --from=compiler /app/app .
 CMD ["./app"]
-HEALTHCHECK --interval=1m --timeout=3s CMD curl --fail http://localhost:$PORT/api/health || exit 1
+HEALTHCHECK --interval=1m --timeout=3s CMD curl --fail http://localhost:$PORT/health || exit 1

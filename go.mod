@@ -5,6 +5,7 @@ go 1.16
 require (
 	github.com/99designs/gqlgen v0.13.0
 	github.com/DATA-DOG/go-sqlmock v1.5.0
+	github.com/PaesslerAG/gval v1.1.0 // indirect
 	github.com/VitorEmanoel/gMediator v1.0.8 // indirect
 	github.com/VitorEmanoel/menv v1.0.3
 	github.com/agnivade/levenshtein v1.1.0 // indirect
@@ -15,6 +16,8 @@ require (
 	github.com/klauspost/compress v1.11.13 // indirect
 	github.com/lib/pq v1.6.0 // indirect
 	github.com/sirupsen/logrus v1.8.1
+	github.com/steinfletcher/apitest v1.5.4 // indirect
+	github.com/steinfletcher/apitest-jsonpath v1.6.0 // indirect
 	github.com/stretchr/testify v1.7.0
 	github.com/valyala/fasthttp v1.23.0
 	github.com/valyala/tcplisten v1.0.0 // indirect

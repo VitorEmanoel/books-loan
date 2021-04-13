@@ -1,7 +1,23 @@
 version: '3.1'
 
 services:
-
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      PORT: 8080
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: super
+      DB_DATABASE: postgres
+    depends_on:
+      - db
+    ports:
+    - 8080:8080
+    networks:
+      - private_network
   db:
     image: 'library/postgres:12.6-alpine'
     restart: always

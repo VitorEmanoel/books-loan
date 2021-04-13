@@ -16,7 +16,7 @@ import (
 )
 
 func (r *bookResolver) CreatedAt(ctx context.Context, obj *models.Book) (string, error) {
-	var formattedValue = obj.CreatedAt.Format(time.RFC3339)
+	var formattedValue = obj.CreatedAt.Format(time.RFC3339Nano)
 	return formattedValue, nil
 }
 
@@ -31,13 +31,13 @@ func (r *bookLoanResolver) Book(ctx context.Context, obj *models.BookLoan) (*mod
 }
 
 func (r *bookLoanResolver) LentAt(ctx context.Context, obj *models.BookLoan) (string, error) {
-	var formattedValue = obj.LentAt.Format(time.RFC3339)
+	var formattedValue = obj.LentAt.Format(time.RFC3339Nano)
 	return formattedValue, nil
 }
 
 func (r *bookLoanResolver) ReturnedAt(ctx context.Context, obj *models.BookLoan) (*string, error) {
 	if obj.ReturnedAt != nil {
-		var formattedValue = obj.ReturnedAt.Format(time.RFC3339)
+		var formattedValue = obj.ReturnedAt.Format(time.RFC3339Nano)
 		return &formattedValue, nil
 	}
 	return nil, nil
@@ -97,7 +97,7 @@ func (r *queryResolver) User(ctx context.Context, id int64) (*models.User, error
 }
 
 func (r *userResolver) CreatedAt(ctx context.Context, obj *models.User) (string, error) {
-	var formattedValue = obj.CreatedAt.Format(time.RFC3339)
+	var formattedValue = obj.CreatedAt.Format(time.RFC3339Nano)
 	return formattedValue, nil
 }
 

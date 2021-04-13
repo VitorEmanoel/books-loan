@@ -7,6 +7,7 @@ import (
 )
 
 func NewAPI(app *fiber.App) {
+	app.Get("/health", Health)
 	var api = app.Group("/api")
 	{
 		graphql.NewGraphQL(api)
