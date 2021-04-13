@@ -52,6 +52,7 @@ func (v *context) Initialize(db *gorm.DB) error {
 	return nil
 }
 
+// NewValidator initialize plugin for validate all structs in gorm
 func NewValidator() gorm.Plugin {
 	return &context{}
 }
