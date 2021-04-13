@@ -1,10 +1,18 @@
+//go:generate gqlgen
+
 package main
 
-import "github.com/sirupsen/logrus"
+import (
+	"fmt"
+
+	"github.com/sirupsen/logrus"
+)
 
 func main() {
-	var app = NewApp()
-	if err := app.Listen(":8080"); err != nil {
+
+	var environment = LoadEnvironment()
+	var app = NewApp(environment)
+	if err := app.Listen(fmt.Sprintf(":%s", environment.Port)); err != nil {
 		logrus.Error("Error in starting server. Error: ", err.Error())
 	}
 }
