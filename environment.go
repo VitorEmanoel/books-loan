@@ -15,7 +15,7 @@ type Environment struct {
 	DatabasePassword    string      `env:"DB_PASSWORD" required:"true"`
 	DatabaseDatabase    string      `env:"DB_DATABASE" required:"true"`
 }
-
+// GetDatabaseInfo transform environment variable struct to database connection string
 func (e *Environment) GetDatabaseInfo() string {
 	return fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", e.DatabaseHost, e.DatabasePort, e.DatabaseUsername, e.DatabasePassword, e.DatabaseDatabase)
 }

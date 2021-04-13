@@ -6,7 +6,7 @@
 Serviço para emprêstimos de livros utilizado GraphQL, escrito em GoLang e utilizando PostgreSQL.
 
 ### Especificações 
-Bibliotecas:
+#### Bibliotecas:
 - [fiber](github.com/gofiber/fiber)
 - [gqlgen](github.com/99designs/gqlgen)
 - [gorm](https://github.com/go-gorm/gorm)
@@ -15,11 +15,13 @@ Bibliotecas:
 - [gMediator](github.com/VitorEmanoel/gMediator)
 - [menv](github.com/VitorEmanoel/menv)
 
-Bibliotecas para testes:
+#### Bibliotecas para testes:
 - [testify](github.com/stretchr/testify)
 - [go-sqlmock](github.com/DATA-DOG/go-sqlmock)
 - [apitest](github.com/steinfletcher/apitest)
 
+#### Estrutura de dados
+![alt data-structure](./book_loans.png)
 
 ### Instalação
 

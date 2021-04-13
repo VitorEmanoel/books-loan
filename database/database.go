@@ -27,10 +27,12 @@ func GetDatabase(ctx *fiber.Ctx) *gorm.DB {
 }
 
 func Open(connection string) *gorm.DB {
+	// Open connection
 	db, err := gorm.Open(postgres.New(postgres.Config{DSN: connection}), &gorm.Config{})
 	if err != nil {
 		logrus.Panic("Error in connect with database. Error: ", err.Error())
 	}
+	// Setup plugins
 	err = plugins.SetupPlugins(db)
 	if err != nil {
 		logrus.Error("Failed in setup gorm plugins. Error: ", err.Error())
@@ -39,11 +41,7 @@ func Open(connection string) *gorm.DB {
 }
 
 func Migrate(db *gorm.DB) error {
-	err := db.Raw(`CREATE EXTENSION IF NOT EXISTS uuid-ossp;`).Error
-	if err != nil {
-		return err
-	}
-	err = db.AutoMigrate(models.Models...)
+	err := db.AutoMigrate(models.Models...)
 	if err != nil {
 		return err
 	}

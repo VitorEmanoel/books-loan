@@ -8,6 +8,7 @@ import (
 	"github.com/vektah/gqlparser/v2/ast"
 )
 
+// GetFields get graphql request fields and filter with allowed filds
 func GetFields(ctx context.Context, allowed ...string) []string {
 	var fieldContext = graphql.GetFieldContext(ctx)
 	var fields []string
